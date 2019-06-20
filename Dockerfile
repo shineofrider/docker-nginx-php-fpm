@@ -1,4 +1,4 @@
-FROM tiredofit/alpine:3.8
+FROM tiredofit/alpine:3.10
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Default Runtime Environment Variables
