@@ -1,3 +1,7 @@
+## 4.4.1 2019-08-07 <dave at tiredofit dot ca>
+
+* Add Nginx Proxy directory to fix startup errors
+
 ## 4.4 2019-06-19 <dave at tiredofit dot ca>
 
 * PHP 7.3 

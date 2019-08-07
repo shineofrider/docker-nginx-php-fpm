@@ -64,6 +64,7 @@
 
   mkdir -p /www/logs/nginx
   mkdir -p /tmp/nginx
+  mkdir -p /var/tmp/nginx/proxy
   chown -R nginx /www/logs/nginx
   chown -R nginx /tmp/nginx
 
