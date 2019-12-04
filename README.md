@@ -1,35 +1,20 @@
-# hub.docker.com/tiredofit/nginx-php-fpm
+# hub.docker.com/r/tiredofit/nginx-php-fpm
+
+[![Build Status](https://img.shields.io/docker/build/tiredofit/nginx-php-fpm.svg)](https://hub.docker.com/r/tiredofit/nginx-php-fpm)
+[![Docker Pulls](https://img.shields.io/docker/pulls/tiredofit/nginx-php-fpm.svg)](https://hub.docker.com/r/tiredofit/nginx-php-fpm)
+[![Docker Stars](https://img.shields.io/docker/stars/tiredofit/nginx-php-fpm.svg)](https://hub.docker.com/r/tiredofit/nginx-php-fpm)
+[![Docker 
+Layers](https://images.microbadger.com/badges/image/tiredofit/nginx-php-fpm.svg)](https://microbadger.com/images/tiredofit/nginx-php-fpm)
+
 
 # Introduction
 
 Dockerfile to build a [Nginx](https://www.nginx.org) w/[PHP-FPM](https://php.net) container image.
 
-* This Container uses Alpine as a base which includes [s6 overlay](https://github.com/just-containers/s6-overlay) enabled for PID 1 Init capabilities, [zabbix-agent](https://zabbix.org) based on 3.4 Packages for individual container monitoring, Cron also installed along with other tools (bash,curl, less, logrotate, mariadb-client, nano, vim) for easier management.
-* Ability to Password Protect (Basic) or use LemonLDAP:NG Handler
+* This Container uses a [customized Alpine Linux base](https://hub.docker.com/r/tiredofit/alpine) which includes [s6 overlay](https://github.com/just-containers/s6-overlay) enabled for PID 1 Init capabilities, [zabbix-agent](https://zabbix.org) for individual container monitoring, Cron also installed along with other tools (bash,curl, less, logrotate, mariadb-client, nano, vim) for easier management. It also supports sending to external SMTP servers..
+* Debug Mode to Enable XDebug
 * Caching is provided with w/ APC, OpCache
-* PHP Extensions included are: 
-         php5-apcu, 
-          php5-bcmath, 
-          php5-ctype, 
-          php5-curl, 
-          php5-dom, 
-          php5-fpm, 
-          php5-gd, 
-          php5-iconv, 
-          php5-intl, 
-          php5-json, 
-          php5-ldap, 
-          php5-mcrypt, 
-          php5-mysqli, 
-          php5-opcache, 
-          php5-openssl, 
-          php5-pdo, 
-          php5-pdo_mysql, 
-          php5-phar\
-          php5-xml, 
-          php5-xmlreader, 
-          php5-zlib
-
+* Enabled by default extensions are: apcu, bcmath, ctype, curl, dom, gd, iconv, intl, json, ldap, mbstring, mcrypt, mysqlnd. opcache, openssl, pdo,  pgsql, phar, session, xml, xmlreader, zlib
 
 
 [Changelog](CHANGELOG.md)
@@ -56,9 +41,7 @@ Dockerfile to build a [Nginx](https://www.nginx.org) w/[PHP-FPM](https://php.net
 
 # Prerequisites
 
-This image assumes that you are using a reverse proxy such as [jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy) and optionally the [Let's Encrypt Proxy Companion @ https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion) in order to serve your pages. However, it will run just fine on it's own if you map appropriate ports.
-
-
+This image assumes that you are using a reverse proxy such as [jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy) and optionally the [Let's Encrypt Proxy Companion @ https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion) or [tiredofit/traefik](https://github.com/tiredofit/docker-traefik) in order to serve your pages. However, it will run just fine on it's own if you map appropriate ports.
 
 # Installation
 
@@ -71,13 +54,19 @@ docker pull hub.docker.com/tiredofit/nginx-php-fpm:(imagetag)
 
 The following image tags are available:
 
-* `5.3-latest` - PHP 5.3.29 w/Alpine 3.4 - Limited Extensions - No Xdebug
-* `5.5-latest` - PHP 5.5..38 w/Alpine 3.4 - Limited Extensions - No Xdebug
-* `5.6-latest` - PHP 5.6.x w/Alpine 3.4 - No XDebug
-* `7.0-latest` - PHP 7.0.x w/Alpine 3.5
-* `7.1-latest` - PHP 7.1.x w/Alpine 3.6
-* `7.1-ldap-latest` - PHP 7.1.x w/LDAP Authentication w/Alpine 3.6
-* `latest` - Most recent release of PHP w/most recent Alpine Linux
+* `7.3-latest` - PHP 7.3.x w/Alpine 3.10
+* `edge-latest` - Most recent release of PHP w/most recent Alpine Linux
+* `7.2-latest` - PHP 7.2.x w/Alpine 3.9
+* `7.1-latest` - PHP 7.1.x w/Alpine 3.7
+* `7.0-latest` - PHP 7.0.x w/Alpine 3.6
+* `5.6-latest` - PHP 5.6.x w/Alpine 3.8
+* `5.5-latest` - PHP 5.5.38 w/Alpine 3.4
+* `5.3-latest` - PHP 5.3.29 w/Alpine 3.4
+
+
+
+
+
 
 # Quick Start
 
@@ -105,83 +94,115 @@ No Database Required - MariaDB Client is located within the image.
 
 ### Environment Variables
 
-Along with the Environment Variables from the Base image, below is the complete list of available options 
-that can be used to customize your installation.
+Along with the Environment Variables from the [Base image](https://hub.docker.com/r/tiredofit/alpine) and the [Nginx Base](https://hub.docker.com/t/tiredofit/nginx), below is the complete list of available options that can be used to customize your installation.
 
-Authentication Options
 
 | Parameter | Description |
 |-----------|-------------|
-| `AUTHENTICATION_TYPE` | Protect site - `NONE`,`BASIC`,`LLNG` - Default `NONE` |
-| `WEB_USER` | If `BASIC` chosen enter this for the username to protect site |
-| `WEB_PASS` | If `BASIC` chosen enter this for the password to protect site |
-| `LLNG_HANDLER_HOST` | If `LLNG` chosen use hostname of handler - Default `llng-handler`
-| `LLNG_HANDLER_PORT` | If `LLNG` chosen use this port for handler - Default `2884` |
+| `PHP_APC_SHM_SIZE` | APC Cache Memory size - `0` to disable - Default `128M` |
+| `PHP_FPM_HOST` | Not used at this time- Default `localhost` |
+| `PHP_FPM_LISTEN_PORT` | PHP-FPM Listening Port - Default `9000` |
+| `PHP_FPM_MAX_CHILDREN` | Maximum Children - Default `75` |
+| `PHP_FPM_MAX_REQUESTS` | How many requests before spawning new server - Default `500` |
+| `PHP_FPM_MAX_SPARE_SERVERS` | Maximum Spare Servers available- Default `3` |
+| `PHP_FPM_MIN_SPARE_SERVERS` | Minium Spare Servers avaialble - Default `1` |
+| `PHP_FPM_PROCESS_MANAGER` | How to handle processes `static`, `ondemand`, `dynamic` - Default `dynamic` |
+| `PHP_FPM_START_SERVERS` | How many FPM servers to start initially - Default `2` |
+| `PHP_LOG_FILE` | Logfile name - Default `php-fpm.log` |
+| `PHP_LOG_LEVEL` | PHP Log Level - Default `notice` |
+| `PHP_LOG_LOCATION` | Log Location for PHP Logs - Default `/www/logs/php-fpm` |
+| `PHP_MEMORY_LIMIT` | How much memory should PHP use - Default `128M` |
+| `PHP_OPCACHE_MEM_SIZE` | OPCache Memory Size - Set `0` to disable or via other env vars - Default `128` |
+| `PHP_TIMEOUT` | Maximum Script execution Time - Default `180` |
+| `PHP_UPLOAD_MAX_SIZE` | Maximum Input Size for Uploads - Default `2G` |
 
-The `LLNG` option is for when using LemonLDAP:NG Handlers to protect your application and require modification to the `/etc/nginx/conf.d/default.llng` file to fully work properly! 
-
-General Options 
-
-| Parameter | Description |
-|-----------|-------------|
-| `PHP_MEMORY_LIMIT` |Amount of memory php-fpm process should use (Default `128M`) |
-| `PHP_LOG_LEVEL` | Define verbosity: (e.g `debug`, `info`, `notice`, `warning`, `error`, `critical`, and `alert` - Default `info`)
-| `PHP_TIMEOUT`   | Sets Read and Write Timeouts for Nginx FastCGI (Default `300`) |
-| `UPLOAD_MAX_SIZE` | Maximum Upload Size: (Default `2G`) |
-| `APC_SHM_SIZE` | PHP5 APC SHM Cache Size: (Default `128M`) |
-| `OPCACHE_MEM_SIZE` | PHP5 OPCache Size - Select `0` to Disable (Default `128`) |
-| `TZ` | Timezone - Use Unix Timezone format (Default `America/Vancouver`) |
-
-Enable/Disable Extensions as follows:
-
-Enabling / Disabling Specific Extensions
+*Enabling / Disabling Specific Extensions*
+Extension variables are the same as the names of the PHP extensions
 
 | Parameter | Description |
 |-----------|-------------|
-| `PHP_ENABLE_APCU` |  apcu extension - Default `TRUE` |
-| `PHP_ENABLE_BCMATH` | bcmath extension - Default `TRUE` |
-| `PHP_ENABLE_BZ2` | bzip2 extension - Default `FALSE` |
-| `PHP_ENABLE_CALENDAR` | calendar extension - Default `FALSE` |
-| `PHP_ENABLE_CTYPE` | ctype extension - Default `TRUE` |
-| `PHP_ENABLE_CURL` | curl extension - Default `TRUE` |
-| `PHP_ENABLE_DBA` | dba extension - Default `FALSE` |
-| `PHP_ENABLE_DOM` | dom extension - Default `TRUE` |
-| `PHP_ENABLE_EMBED` | embed extension - Default `FALSE` |
-| `PHP_ENABLE_ENCHANT` | enchant extension - Default `FALSE` |
-| `PHP_ENABLE_EXIF` | EXIF extension - Default `FALSE` |
-| `PHP_ENABLE_FTP` | FTP extension - Default `FALSE` |
-| `PHP_ENABLE_GD` | GD extension - Default `TRUE` |
-| `PHP_ENABLE_GETTEXT` | gettext extension - Default `FALSE` |
-| `PHP_ENABLE_GMP` |  gmp extension - Default `FALSE` |
-| `PHP_ENABLE_ICONV` | iconv extension - Default `TRUE` |
-| `PHP_ENABLE_IMAP` | IMAP extension - Default `TRUE` |
-| `PHP_ENABLE_INTL` | INTL extension - Default `TRUE` |
-| `PHP_ENABLE_JSON` | JSON extension - Default `TRUE` |
-| `PHP_ENABLE_LDAP` | LDAP extension - Default `TRUE` |
-| `PHP_ENABLE_MAILPARSE` | MAILPARSE extension - Default `FALSE` |
-| `PHP_ENABLE_MBSTRING` | mbstring extension - Default `TRUE` |
-| `PHP_ENABLE_MCRYPT` | mcrypt extension - Default `TRUE` |
-| `PHP_ENABLE_ODBC` |  ODBC extension - Default `FALSE` |
-| `PHP_ENABLE_OPCACHE` | OPCACHE extension - Default `TRUE` |
-| `PHP_ENABLE_OPENSSL` | OpenSSL extension - Default `TRUE` |
-| `PHP_ENABLE_PCNTL` | PCNTL extension - Default `FALSE` |
-| `PHP_ENABLE_PDO` | PDO extension - Default `TRUE` |
-| `PHP_ENABLE_PDO_MYSQL` | PDO_MySQL extension - Default `TRUE` |
-| `PHP_ENABLE_PDO_PGSQL` | PDO_PGSQL extension - Default `FALSE` |
-| `PHP_ENABLE_PDO_SQLITE` | PDO_SQLITE3 extension - Default `TRUE` |
-| `PHP_ENABLE_PGSQL` | PGSQL extension - Default `TRUE` |
-| `PHP_ENABLE_PHAR` | PHAR extension - Default `TRUE` |
-| `PHP_ENABLE_POSIX` | POSIX extension - Default `FALSE` |
-| `PHP_ENABLE_PSPELL` | pspell extension - Default `FALSE` |
-| `PHP_ENABLE_SHMOP` | SHMOP extension - Default `FALSE` |
-| `PHP_ENABLE_SNMP` | SNMP extension - Default `FALSE` |
-| `PHP_ENABLE_SOAP` | SOAP extension - Default `FALSE` |
-| `PHP_ENABLE_WDDX` | WDDX extension - Default `FALSE` |
-| `PHP_ENABLE_XML` | XML extension - Default `TRUE` |
-| `PHP_ENABLE_XMLREADER` | XMLReader extension - Default `TRUE` |
-| `PHP_ENABLE_XMLRPC` | XMLRPC extension - Default `FALSE` |
-| `PHP_ENABLE_ZIP` | ZIP extension - Default `FALSE` |
-| `PHP_ENABLE_ZLIB` | Zlib extension - Default `TRUE` |
+| `PHP_ENABLE_AMQP` | Default `FALSE` |
+| `PHP_ENABLE_APCU` |  Default `TRUE` |
+| `PHP_ENABLE_BCMATH` | Default `TRUE` |
+| `PHP_ENABLE_BZ2` | Default `FALSE` |
+| `PHP_ENABLE_CALENDAR` | Default `FALSE` |
+| `PHP_ENABLE_CREATE_SAMPLE_PHP` | Default `TRUE` |
+| `PHP_ENABLE_CTYPE` | Default `TRUE` |
+| `PHP_ENABLE_CURL` | Default `TRUE` |
+| `PHP_ENABLE_DBA` | Default `FALSE` |
+| `PHP_ENABLE_DISPLAY_ERRORS` | Default `TRUE` |
+| `PHP_ENABLE_DOM` | Default `TRUE` |
+| `PHP_ENABLE_EMBED` | Default `FALSE` |
+| `PHP_ENABLE_ENCHANT` | Default `FALSE` |
+| `PHP_ENABLE_EXIF` | Default `FALSE` |
+| `PHP_ENABLE_FILEINFO` | Default `FALSE` |
+| `PHP_ENABLE_FTP` | Default `FALSE` |
+| `PHP_ENABLE_GD` | Default `TRUE` |
+| `PHP_ENABLE_GETTEXT` | Default `FALSE` |
+| `PHP_ENABLE_GMP` | Default `FALSE` |
+| `PHP_ENABLE_ICONV` | Default `TRUE` |
+| `PHP_ENABLE_IGBINARY` | Default `FALSE` |
+| `PHP_ENABLE_IMAGICK` | Default `FALSE` |
+| `PHP_ENABLE_IMAP` | Default `TRUE` |
+| `PHP_ENABLE_INTL` | Default `TRUE` |
+| `PHP_ENABLE_JSON` | Default `TRUE` |
+| `PHP_ENABLE_LDAP` | Default `FALSE` |
+| `PHP_ENABLE_MAILPARSE` | Default `FALSE` |
+| `PHP_ENABLE_MBSTRING` | Default `TRUE` |
+| `PHP_ENABLE_MCRYPT` | Default `TRUE` |
+| `PHP_ENABLE_MEMCACHED` | Default `FALSE` |
+| `PHP_ENABLE_MYSQLI` | Default `FALSE` |
+| `PHP_ENABLE_MYSQLND` | Default `TRUE` |
+| `PHP_ENABLE_ODBC` | Default `FALSE` |
+| `PHP_ENABLE_OPCACHE` | Default `TRUE` |
+| `PHP_ENABLE_OPENSSL` | Default `TRUE` |
+| `PHP_ENABLE_PCNTL` | Default `FALSE` |
+| `PHP_ENABLE_PDO` | Default `FALSE` |
+| `PHP_ENABLE_PDO_DBLIB` | Default `FALSE` |
+| `PHP_ENABLE_PDO_MYSQL` | Default `FALSE` |
+| `PHP_ENABLE_PDO_PGSQL` | Default `FALSE` |
+| `PHP_ENABLE_PDO_ODBC` | Default `FALSE` |
+| `PHP_ENABLE_PDO_SQLITE` | Default `FALSE` |
+| `PHP_ENABLE_PGSQL` | Default `TRUE` |
+| `PHP_ENABLE_PHAR` | Default `TRUE` |
+| `PHP_ENABLE_POSIX` | Default `FALSE` |
+| `PHP_ENABLE_PSPELL` | Default `FALSE` |
+| `PHP_ENABLE_RECODE` | Default `FALSE` |
+| `PHP_ENABLE_REDIS` | Default `FALSE` |
+| `PHP_ENABLE_SESSION` | Default `TRUE` |
+| `PHP_ENABLE_SHMOP` | Default `FALSE` |
+| `PHP_ENABLE_SIMPLEXML` | Default `FALSE` |
+| `PHP_ENABLE_SNMP` | Default `FALSE` |
+| `PHP_ENABLE_SOAP` | Default `FALSE` |
+| `PHP_ENABLE_SOCKETS` | Default `FALSE` |
+| `PHP_ENABLE_SQLITE3` | Default `FALSE` |
+| `PHP_ENABLE_TIDY` | Default `FALSE` |
+| `PHP_ENABLE_TOKENIZER` | Default `FALSE` |
+| `PHP_ENABLE_WDDX` | Default `FALSE` |
+| `PHP_ENABLE_XDEBUG` | Default `FALSE` |
+| `PHP_ENABLE_XML` | Default `TRUE` |
+| `PHP_ENABLE_XMLREADER` | Default `TRUE` |
+| `PHP_ENABLE_XMLRPC` | Default `FALSE` |
+| `PHP_ENABLE_XMLWRITER` | Default `FALSE` |
+| `PHP_ENABLE_ZIP` | Default `FALSE` |
+| `PHP_ENABLE_ZLIB` | Default `TRUE` |
+| `PHP_ENABLE_ZMQ` | Default `FALSE` |
+
+If you enable `PHP_ENABLE_KITCHENSINK=TRUE` all extensions above will be enabled.
+
+If enabling `PHP_ENABLE_XDEBUG`  the following are the environment variables are available. Visit the [PHP XDebug Documentation](https://xdebug.org/docs/all_settings#remote_connect_back) to understand what these options mean.
+
+| Parameter | Description |
+|-----------|-------------|
+| `PHP_XDEBUG_PROFILER_DIR` |  Where to store Profiler Logs - Default `/www/logs/xdebug/` |
+| `PHP_XDEBUG_PROFILER_ENABLE` | Enable Profiler - Default `0` |
+| `PHP_XDEBUG_PROFILER_ENABLE_TRIGGER` | Enable Profiler Trigger - Default `0` | 
+| `PHP_XDEBUG_REMOTE_AUTOSTART` | Enable Autostarting as opposed to GET/POST - Default `1` |
+| `PHP_XDEBUG_REMOTE_CONNECT_BACK` | Enbable Connection Back - Default `0` |  
+| `PHP_XDEBUG_REMOTE_ENABLE` | Enable Remote Debugging - Default `1` |
+| `PHP_XDEBUG_REMOTE_HANDLER` | XDebug Remote Handler - Default `dbgp` |
+| `PHP_XDEBUG_REMOTE_HOST` | Set this to your IP Address - Default `127.0.0.1` |
+| `PHP_XDEBUG_REMOTE_PORT` | XDebug Remote Port - Default `9090` |
 
 ### Networking
 
@@ -189,10 +210,12 @@ The following ports are exposed.
 
 | Port      | Description |
 |-----------|-------------|
-| `80` 		| HTTP 		  |
+| `9000`  	| PHP-FPM     |
 
 # Maintenance
 #### Shell Access
+
+If you wish to turn the web server into maintenance mode showing a single page screen outlining that the service is being worked on, you can also enter into the container and type `maintenance ARG`, where ARG is either `ON`,`OFF`, or `SLEEP (seconds)` which will temporarily place the site in maintenance mode and then restore it back to normal after time has passed. 
 
 For debugging and maintenance purposes you may want access the containers shell. 
 
@@ -204,4 +227,5 @@ docker exec -it (whatever your container name is e.g. nginx-php-fpm) bash
 
 * https://www.nginx.org
 * http://www.php.org
+* https://xdebug.org
 

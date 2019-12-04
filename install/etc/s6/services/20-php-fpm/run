@@ -1,17 +1,16 @@
 #!/usr/bin/with-contenv bash
 
-while [ ! -f /tmp/state/99-container-init ]
+while [ ! -f /tmp/state/10-nginx ]
 do
   sleep 1
 done
 
 if [ ! -f /tmp/state/20-php-fpm ]; then
-	### Start php-fpm
-	mkdir -p /tmp/state/
-	echo 'Initialization Complete' >/tmp/state/20-php-fpm
+### Set Defaults
+	NGINX_WEBROOT=${NGINX_WEBROOT:-"/www/html"}
+	PHP_VERSION=${PHP_VERSION:-`php-fpm5 -v | head -n 1 | awk '{print $2}'`}
+	echo "PHP-FPM ${PHP_VERSION} Initializaed on "`date` >/tmp/state/20-php-fpm
 fi
 
-
-echo ''
-echo '** [nginx-php-fpm] Starting php-fpm..'
-exec s6-setuidgid nginx php-fpm -F;
+echo "** [php-fpm] Starting php-fpm ${PHP_VERSION}"
+exec s6-setuidgid nginx php-fpm5 -F;

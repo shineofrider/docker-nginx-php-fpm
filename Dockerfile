@@ -1,19 +1,19 @@
-FROM tiredofit/alpine:3.4
+FROM tiredofit/nginx:alpine-3.7
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Default Runtime Environment Variables
-  ENV ZABBIX_HOSTNAME=nginx-php-fpm-app \
-      ENABLE_SMTP=TRUE
+ENV ZABBIX_HOSTNAME=nginx-php-fpm-app \
+    ENABLE_SMTP=TRUE \
+    NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE
 
-
-  RUN apk update ; \
-      apk add \
-          bash \
-          apache2-utils \
+### Dependency Installation
+RUN set -x && \
+    apk update && \
+    apk add -t .php-fpm-run-deps \
           ca-certificates \
+          imagemagick \
           mariadb-client \
-          nginx \
-          openssl \
+          php5 \
           php5-apcu \
           php5-bcmath \
           php5-bz2 \
@@ -35,7 +35,7 @@ LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
           php5-imap \
           php5-json \
           php5-ldap \
-          php5-mailparse \
+          #php5-mailparse \
           php5-mcrypt \
           php5-mysqli \
           php5-odbc \
@@ -62,24 +62,23 @@ LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
           php5-xml \
           php5-zip \
           php5-zlib \
-          ; \
-          \
-      rm -rf /var/cache/apk/* ; \
-      \
+          postgresql-client \
+          && \
+ \
 ### Nginx and PHP5 Setup
-      sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php5/php.ini ; \
-      sed -i "s/nginx:x:100:101:nginx:\/var\/lib\/nginx:\/sbin\/nologin/nginx:x:100:101:nginx:\/www:\/bin\/bash/g" /etc/passwd ; \
-      sed -i "s/nginx:x:100:101:nginx:\/var\/lib\/nginx:\/sbin\/nologin/nginx:x:100:101:nginx:\/www:\/bin\/bash/g" /etc/passwd- ; \
-      \
+ sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php5/php.ini && \
+ ln -s /usr/bin/php5 /usr/sbin/php && \
+ ln -s /usr/bin/php-fpm5 /usr/sbin/php-fpm && \
+ rm -rf /etc/php5/conf.d/opcache.ini && \
+ \
 ### Install PHP Composer
-      curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer ; \
-      \
-### WWW  Installation
-      mkdir -p /www/logs
+ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
+ \
+### Cleanup
+ rm -rf /var/cache/apk/*
 
 ### Networking Configuration
-  EXPOSE 80
+EXPOSE 9000
 
 ### Files Addition
-  ADD install /
-  RUN chmod +x /etc/zabbix/zabbix_agentd.conf.d/scripts/*
+ADD install /
