@@ -1,24 +1,23 @@
-FROM tiredofit/alpine:3.5
+FROM tiredofit/nginx:alpine-3.5
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Default Runtime Environment Variables
-  ENV ZABBIX_HOSTNAME=nginx-php-fpm-app \
-      ENABLE_SMTP=TRUE
+ENV ZABBIX_HOSTNAME=nginx-php-fpm-app \
+    ENABLE_SMTP=TRUE \
+    NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE
 
 ### Dependency Installation
-  RUN set -x ; \
-      apk update ; \
-      apk add \
-          apache2-utils \
+RUN set -x && \
+    apk update && \
+    apk add -t .php-fpm-run-deps \
           ca-certificates \
+          imagemagick \
           mariadb-client \
-          openssl \
-          nginx \
-          php7 \
           php7-apcu \
           php7-bcmath \
           php7-bz2 \
           php7-calendar \
+          php7-common \
           php7-ctype \
           php7-curl \
           php7-dba \
@@ -36,6 +35,7 @@ LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
           php7-intl \
           php7-json \
           php7-ldap \
+          php7-litespeed \
           php7-mbstring \
           php7-mcrypt \
           php7-mysqli \
@@ -45,9 +45,6 @@ LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
           php7-openssl \
           php7-pcntl \
           php7-pdo \
-          php7-pdo_mysql \
-          php7-pdo_pgsql \
-          php7-pdo_sqlite \
           php7-pgsql \
           php7-phar\
           php7-posix \
@@ -64,28 +61,25 @@ LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
           php7-xml \
           php7-xmlreader \
           php7-xmlrpc \
+          php7-xml \
           php7-zip \
           php7-zlib \
-          ; \
-      \
-      rm -rf /var/cache/apk/* ; \
-      \
+          postgresql-client \
+          && \
+ \
 ### Nginx and PHP7 Setup
-      sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php7/php.ini ; \
-      sed -i "s/nginx:x:100:101:nginx:\/var\/lib\/nginx:\/sbin\/nologin/nginx:x:100:101:nginx:\/www:\/bin\/bash/g" /etc/passwd ; \
-      sed -i "s/nginx:x:100:101:nginx:\/var\/lib\/nginx:\/sbin\/nologin/nginx:x:100:101:nginx:\/www:\/bin\/bash/g" /etc/passwd- ; \
-      ln -s /sbin/php-fpm7 /sbin/php-fpm ; \
-      ln -s /usr/bin/php7 /sbin/php ; \
-      \
+ sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php7/php.ini && \
+ ln -s /sbin/php-fpm7 /sbin/php-fpm && \
+ ln -s /usr/bin/php7 /sbin/php && \
+ \
 ### Install PHP Composer
-      curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer ; \
-      \
-### WWW  Installation
-      mkdir -p /www/logs
+ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
+ \
+### Cleanup
+ rm -rf /var/cache/apk/*
 
 ### Networking Configuration
-  EXPOSE 80
+EXPOSE 9000
 
 ### Files Addition
-  ADD install /
-  RUN chmod +x /etc/zabbix/zabbix_agentd.conf.d/scripts/*
+ADD install /
