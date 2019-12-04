@@ -1,6 +1,21 @@
-## 4.4.1 2019-08-07 <dave at tiredofit dot ca>
+## 5.0.0 2019-12-04 <dave at tiredofit dot ca>
 
-* Add Nginx Proxy directory to fix startup errors
+   ### Added
+      - Reworked entire image
+      - Added many new variables
+      - Basing off of tiredofit/nginx
+      - Code Cleanup
+
+
+## 4.4.2 2019-11-18 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Update Nginx proxy temp location
+
+
+## 4.4.1 2019-07-08 <dave at tiredofit dot ca>
+
+* Add tmp folder during startup to avoid bootloop
 
 ## 4.4 2019-06-19 <dave at tiredofit dot ca>
 
