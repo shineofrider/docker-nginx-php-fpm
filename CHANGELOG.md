@@ -1,3 +1,43 @@
+## 5.0.0 2019-12-04 <dave at tiredofit dot ca>
+
+   ### Added
+      - Reworked entire image
+      - Added many new variables
+      - Basing off of tiredofit/nginx
+      - Code Cleanup
+
+
+## 4.4.2 2019-11-18 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Update Nginx proxy temp location
+
+
+## 4.4.1 2019-07-08 <dave at tiredofit dot ca>
+
+* Add tmp folder during startup to avoid bootloop
+
+## 4.4 2019-06-19 <dave at tiredofit dot ca>
+
+* PHP 7.3 
+* Alpine 3.10
+
+## 4.3 2019-03-03 <dave at tiredofit dot ca>
+
+* Move Alpine base to 3.9
+
+## 4.2 2018-12-17 <dave at tiredofit dot ca>
+
+* Add Nginx tmp cache directory
+
+## 4.1 2018-11-28 <dave at tiredofit dot ca>
+
+* Fix Timezone setting for php.ini
+
+## 4.0.1 2018-11-19 <dave at tiredofit dot ca>
+
+* Update further LLNG
+
 ## 4.0 2018-04-28 <dave at tiredofit dot ca>
 
 * Ability to protect service via basic authentication or using LemonLDAP:NG Handlers
