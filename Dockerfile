@@ -1,4 +1,4 @@
-FROM registry.selfdesign.org/docker/nginx/alpine-edge
+FROM tiredofit/nginx:alpine-edge
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Default Runtime Environment Variables
