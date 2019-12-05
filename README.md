@@ -155,14 +155,14 @@ Extension variables are the same as the names of the PHP extensions
 | `PHP_ENABLE_MCRYPT` | Default `TRUE` |
 | `PHP_ENABLE_MEMCACHED` | Default `FALSE` |
 | `PHP_ENABLE_MONGODB` | Default `FALSE` |
-| `PHP_ENABLE_MYSQLI` | Default `FALSE` |
+| `PHP_ENABLE_MYSQLI` | Default `TRUE` |
 | `PHP_ENABLE_MYSQLND` | Default `TRUE` |
 | `PHP_ENABLE_ODBC` | Default `FALSE` |
 | `PHP_ENABLE_OPCACHE` | Default `TRUE` |
 | `PHP_ENABLE_OPENSSL` | Default `TRUE` |
 | `PHP_ENABLE_PCNTL` | Default `FALSE` |
-| `PHP_ENABLE_PDO` | Default `FALSE` |
-| `PHP_ENABLE_PDO_DBLIB` | Default `FALSE` |
+| `PHP_ENABLE_PDO` | Default `TRUE` |
+| `PHP_ENABLE_PDO_DBLIB` | Default `TRUE` |
 | `PHP_ENABLE_PDO_MYSQL` | Default `FALSE` |
 | `PHP_ENABLE_PDO_PGSQL` | Default `FALSE` |
 | `PHP_ENABLE_PDO_ODBC` | Default `FALSE` |
