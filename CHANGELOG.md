@@ -1,3 +1,9 @@
+## 5.0.1 2019-12-04 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Make MYSQLI and PDO_MYSQL enabled by default
+
+
 ## 5.0.0 2019-12-04 <dave at tiredofit dot ca>
 
    ### Added
