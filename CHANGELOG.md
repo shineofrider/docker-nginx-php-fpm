@@ -1,3 +1,9 @@
+## 5.0.1 2019-12-04 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Enable PDO, PDO_MYSQL, MYSQLI extensions by default
+
+
 ## 5.0.0 2019-12-04 <dave at tiredofit dot ca>
 
    ### Added
