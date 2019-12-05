@@ -1,4 +1,4 @@
-FROM tiredofit/nginx:alpine-3.7
+FROM registry.selfdesign.org/docker/nginx/alpine-3.7
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Default Runtime Environment Variables
