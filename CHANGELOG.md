@@ -1,3 +1,25 @@
+## 5.1.0 2019-12-29 <dave at tiredofit dot ca>
+
+   ### Added
+      - Update to support new tiredofit/alpine base image
+
+
+## 5.0.4 2019-12-19 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change to LLNG Authentication Auto Configuration Routines
+
+## 5.0.3 2019-12-18 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fixed error with display errors configuration
+      
+## 5.0.2 2019-12-18 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change to support dynamic webserver user/group
+
+
 ## 5.0.1 2019-12-04 <dave at tiredofit dot ca>
 
    ### Changed
