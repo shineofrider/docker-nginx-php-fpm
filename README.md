@@ -54,7 +54,7 @@ docker pull hub.docker.com/tiredofit/nginx-php-fpm:(imagetag)
 
 The following image tags are available:
 
-* `7.3-latest` - PHP 7.3.x w/Alpine 3.10
+* `7.3-latest` - PHP 7.3.x w/Alpine 3.11
 * `edge-latest` - Most recent release of PHP w/most recent Alpine Linux
 * `7.2-latest` - PHP 7.2.x w/Alpine 3.9
 * `7.1-latest` - PHP 7.1.x w/Alpine 3.7
@@ -62,11 +62,6 @@ The following image tags are available:
 * `5.6-latest` - PHP 5.6.x w/Alpine 3.5
 * `5.5-latest` - PHP 5.5.38 w/Alpine 3.4
 * `5.3-latest` - PHP 5.3.29 w/Alpine 3.4
-
-
-
-
-
 
 # Quick Start
 

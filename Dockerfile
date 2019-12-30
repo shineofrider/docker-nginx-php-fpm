@@ -1,4 +1,4 @@
-FROM tiredofit/nginx:alpine-3.10
+FROM tiredofit/nginx:alpine-3.11
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Default Runtime Environment Variables
