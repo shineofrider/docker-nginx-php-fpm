@@ -1,3 +1,12 @@
+## 5.2.0 2019-12-31 <dave at tiredofit dot ca>
+
+   ### Added
+      - Move defaults to /assets/functions files
+
+   ### Changed
+      - Change warnings to notices
+
+
 ## 5.1.0 2019-12-29 <dave at tiredofit dot ca>
 
    ### Added
@@ -9,11 +18,11 @@
    ### Changed
       - Change to LLNG Authentication Auto Configuration Routines
 
+
 ## 5.0.3 2019-12-18 <dave at tiredofit dot ca>
 
    ### Changed
       - Fixed error with display errors configuration
-
 
 ## 5.0.2 2019-12-18 <dave at tiredofit dot ca>
 
@@ -24,7 +33,7 @@
 ## 5.0.1 2019-12-04 <dave at tiredofit dot ca>
 
    ### Changed
-      - Make MySQLI and PDO_MYSQL extensions active by default
+      - Make MySQL Default Enabled
 
 
 ## 5.0.0 2019-12-04 <dave at tiredofit dot ca>
