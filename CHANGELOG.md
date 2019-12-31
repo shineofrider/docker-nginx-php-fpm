@@ -1,3 +1,12 @@
+## 5.2.0 2019-12-31 <dave at tiredofit dot ca>
+
+   ### Added
+      - Move defaults to /assets/functions files
+
+   ### Changed
+      - Change warnings to notices
+
+
 ## 5.1.0 2019-12-29 <dave at tiredofit dot ca>
 
    ### Added
