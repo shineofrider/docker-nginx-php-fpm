@@ -1,3 +1,13 @@
+## 5.2.2 2020-01-03 <dave at tiredofit dot ca>
+
+   ### Added
+      - ADD PHP_POST_MAX_SIZE environment variable
+
+   ### Changed
+      - Cleanup with LLNG Authentication
+      - Properly assign PHP_UPLOAD_MAX_SIZE and PHP_POST_MAX_SIZE variables
+
+
 ## 5.2.0 2019-12-31 <dave at tiredofit dot ca>
 
    ### Added
