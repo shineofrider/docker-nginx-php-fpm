@@ -113,6 +113,7 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 | `PHP_LOG_LOCATION` | Log Location for PHP Logs - Default `/www/logs/php-fpm` |
 | `PHP_MEMORY_LIMIT` | How much memory should PHP use - Default `128M` |
 | `PHP_OPCACHE_MEM_SIZE` | OPCache Memory Size - Set `0` to disable or via other env vars - Default `128` |
+| `PHP_POST_MAX_SIZE` | Maximum Input Size for POST - Default `2G` |
 | `PHP_TIMEOUT` | Maximum Script execution Time - Default `180` |
 | `PHP_UPLOAD_MAX_SIZE` | Maximum Input Size for Uploads - Default `2G` |
 
