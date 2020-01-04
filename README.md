@@ -59,7 +59,7 @@ The following image tags are available:
 * `7.2-latest` - PHP 7.2.x w/Alpine 3.9
 * `7.1-latest` - PHP 7.1.x w/Alpine 3.7
 * `7.0-latest` - PHP 7.0.x w/Alpine 3.6
-* `5.6-latest` - PHP 5.6.x w/Alpine 3.5
+* `5.6-latest` - PHP 5.6.x w/Alpine 3.8
 * `5.5-latest` - PHP 5.5.38 w/Alpine 3.4
 * `5.3-latest` - PHP 5.3.29 w/Alpine 3.4
 
@@ -133,11 +133,13 @@ Note: You can also pass arguments to each server as defined in the [Nginx Upstre
 | `PHP_UPLOAD_MAX_SIZE` | Maximum Input Size for Uploads - Default `2G` |
 | `PHP_WEBROOT` | Used with `CONTAINER_MODE=php-fpm` - Default `/www/html` |
 
+
 *Enabling / Disabling Specific Extensions*
 Extension variables are the same as the names of the PHP extensions
 
 | Parameter | Description |
 |-----------|-------------|
+| `PHP_ENABLE_AMQP` | Default `FALSE` |
 | `PHP_ENABLE_APCU` |  Default `TRUE` |
 | `PHP_ENABLE_BCMATH` | Default `TRUE` |
 | `PHP_ENABLE_BZ2` | Default `FALSE` |
@@ -151,29 +153,40 @@ Extension variables are the same as the names of the PHP extensions
 | `PHP_ENABLE_EMBED` | Default `FALSE` |
 | `PHP_ENABLE_ENCHANT` | Default `FALSE` |
 | `PHP_ENABLE_EXIF` | Default `FALSE` |
+| `PHP_ENABLE_FILEINFO` | Default `FALSE` |
 | `PHP_ENABLE_FTP` | Default `FALSE` |
 | `PHP_ENABLE_GD` | Default `TRUE` |
 | `PHP_ENABLE_GETTEXT` | Default `FALSE` |
 | `PHP_ENABLE_GMP` | Default `FALSE` |
 | `PHP_ENABLE_ICONV` | Default `TRUE` |
 | `PHP_ENABLE_IGBINARY` | Default `FALSE` |
+| `PHP_ENABLE_IMAGICK` | Default `FALSE` |
 | `PHP_ENABLE_IMAP` | Default `TRUE` |
 | `PHP_ENABLE_INTL` | Default `TRUE` |
 | `PHP_ENABLE_JSON` | Default `TRUE` |
 | `PHP_ENABLE_LDAP` | Default `FALSE` |
+| `PHP_ENABLE_MAILPARSE` | Default `FALSE` |
 | `PHP_ENABLE_MBSTRING` | Default `TRUE` |
 | `PHP_ENABLE_MCRYPT` | Default `TRUE` |
-| `PHP_ENABLE_MYSQLI` | Default `FALSE` |
+| `PHP_ENABLE_MEMCACHED` | Default `FALSE` |
+| `PHP_ENABLE_MYSQLI` | Default `TRUE` |
 | `PHP_ENABLE_MYSQLND` | Default `TRUE` |
 | `PHP_ENABLE_ODBC` | Default `FALSE` |
 | `PHP_ENABLE_OPCACHE` | Default `TRUE` |
 | `PHP_ENABLE_OPENSSL` | Default `TRUE` |
 | `PHP_ENABLE_PCNTL` | Default `FALSE` |
-| `PHP_ENABLE_PDO` | Default `FALSE` |
+| `PHP_ENABLE_PDO` | Default `TRUE` |
+| `PHP_ENABLE_PDO_DBLIB` | Default `FALSE` |
+| `PHP_ENABLE_PDO_MYSQL` | Default `TRUE` |
+| `PHP_ENABLE_PDO_PGSQL` | Default `FALSE` |
+| `PHP_ENABLE_PDO_ODBC` | Default `FALSE` |
+| `PHP_ENABLE_PDO_SQLITE` | Default `FALSE` |
 | `PHP_ENABLE_PGSQL` | Default `TRUE` |
 | `PHP_ENABLE_PHAR` | Default `TRUE` |
 | `PHP_ENABLE_POSIX` | Default `FALSE` |
 | `PHP_ENABLE_PSPELL` | Default `FALSE` |
+| `PHP_ENABLE_RECODE` | Default `FALSE` |
+| `PHP_ENABLE_REDIS` | Default `FALSE` |
 | `PHP_ENABLE_SESSION` | Default `TRUE` |
 | `PHP_ENABLE_SHMOP` | Default `FALSE` |
 | `PHP_ENABLE_SIMPLEXML` | Default `FALSE` |
@@ -182,13 +195,16 @@ Extension variables are the same as the names of the PHP extensions
 | `PHP_ENABLE_SOCKETS` | Default `FALSE` |
 | `PHP_ENABLE_SQLITE3` | Default `FALSE` |
 | `PHP_ENABLE_TIDY` | Default `FALSE` |
+| `PHP_ENABLE_TOKENIZER` | Default `FALSE` |
 | `PHP_ENABLE_WDDX` | Default `FALSE` |
 | `PHP_ENABLE_XDEBUG` | Default `FALSE` |
 | `PHP_ENABLE_XML` | Default `TRUE` |
 | `PHP_ENABLE_XMLREADER` | Default `TRUE` |
 | `PHP_ENABLE_XMLRPC` | Default `FALSE` |
+| `PHP_ENABLE_XMLWRITER` | Default `FALSE` |
 | `PHP_ENABLE_ZIP` | Default `FALSE` |
 | `PHP_ENABLE_ZLIB` | Default `TRUE` |
+| `PHP_ENABLE_ZMQ` | Default `FALSE` |
 
 If you enable `PHP_ENABLE_KITCHENSINK=TRUE` all extensions above will be enabled.
 
