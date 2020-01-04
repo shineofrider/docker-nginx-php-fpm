@@ -54,7 +54,7 @@ docker pull hub.docker.com/tiredofit/nginx-php-fpm:(imagetag)
 
 The following image tags are available:
 
-* `7.3-latest` - PHP 7.3.x w/Alpine 3.10
+* `7.3-latest` - PHP 7.3.x w/Alpine 3.11
 * `edge-latest` - Most recent release of PHP w/most recent Alpine Linux
 * `7.2-latest` - PHP 7.2.x w/Alpine 3.9
 * `7.1-latest` - PHP 7.1.x w/Alpine 3.7
@@ -96,12 +96,27 @@ No Database Required - MariaDB Client is located within the image.
 
 Along with the Environment Variables from the [Base image](https://hub.docker.com/r/tiredofit/alpine) and the [Nginx Base](https://hub.docker.com/t/tiredofit/nginx), below is the complete list of available options that can be used to customize your installation.
 
+*Container Options*
+
+The container has an ability to work in 3 modes, `nginx-php-fpm` (default) is an All in One image with nginx and php-fpm working together, `nginx` will only utilize nginx however not the included php-fpm instance, allowing for connecting to multiple remote php-fpm backends, and finally `php-fpm` to operate PHP-FPM in standalone mode. 
+
+
+| Parameter | Description |
+|-----------|-------------|
+| `CONTAINER_MODE` | Mode of running container `nginx-php-fpm`, `nginx`, `php-fpm` - Default `nginx-php-fpm` |
+
+When `CONTAINER_MODE` set to `nginx` the `PHP_FPM_LISTEN_PORT` environment variable is ignored and the `PHP_FPM_HOST` variable defined below changes. You can add multiple PHP-FPM hosts to the backend in this syntax
+<host>:<port> seperated by commas e.g.
+
+    `php-fpm-container1:9000,php-fpm-container2:9000`
+
+Note: You can also pass arguments to each server as defined in the [Nginx Upstream Documentation](https://nginx.org/en/docs/http/ngx_http_upstream_module.html)
 
 | Parameter | Description |
 |-----------|-------------|
 | `PHP_APC_SHM_SIZE` | APC Cache Memory size - `0` to disable - Default `128M` |
-| `PHP_FPM_HOST` | Not used at this time- Default `localhost` |
-| `PHP_FPM_LISTEN_PORT` | PHP-FPM Listening Port - Default `9000` |
+| `PHP_FPM_HOST` | Default PHP-FPM Host - Default `127.0.0.1` - See above Container options |
+| `PHP_FPM_LISTEN_PORT` | PHP-FPM Listening Port - Ignored with above container options - Default `9000` |
 | `PHP_FPM_MAX_CHILDREN` | Maximum Children - Default `75` |
 | `PHP_FPM_MAX_REQUESTS` | How many requests before spawning new server - Default `500` |
 | `PHP_FPM_MAX_SPARE_SERVERS` | Maximum Spare Servers available- Default `3` |
@@ -116,6 +131,8 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 | `PHP_POST_MAX_SIZE` | Maximum Input Size for POST - Default `2G` |
 | `PHP_TIMEOUT` | Maximum Script execution Time - Default `180` |
 | `PHP_UPLOAD_MAX_SIZE` | Maximum Input Size for Uploads - Default `2G` |
+| `PHP_WEBROOT` | Used with `CONTAINER_MODE=php-fpm` - Default `/www/html` |
+
 
 *Enabling / Disabling Specific Extensions*
 Extension variables are the same as the names of the PHP extensions
