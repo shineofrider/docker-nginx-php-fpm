@@ -1,3 +1,10 @@
+## 5.3.0 2020-01-04 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add new `CONTAINER_MODE` environment variable to allow standalone operation for load balancing
+      - Add new `PHP_WEBROOT` environment variable when `CONTAINER_MODE` set to `php-fpm`
+
+
 ## 5.2.2 2020-01-03 <dave at tiredofit dot ca>
 
    ### Added
