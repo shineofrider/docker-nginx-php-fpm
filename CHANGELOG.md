@@ -1,3 +1,9 @@
+## 5.3.1 2020-01-20 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change the way PHP XDebug is being called
+
+
 ## 5.3.0 2020-01-04 <dave at tiredofit dot ca>
 
    ### Added
