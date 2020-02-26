@@ -1,3 +1,9 @@
+## 5.3.2 2020-02-25 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Remove PhP7-pecl-mongodb temporarily
+
+
 ## 5.3.1 2020-01-20 <dave at tiredofit dot ca>
 
    ### Changed

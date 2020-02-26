@@ -47,7 +47,7 @@ RUN set -x && \
           php7-mbstring \
           php7-mcrypt \
           php7-memcached \
-          php7-pecl-mongodb \
+          #php7-pecl-mongodb \
           php7-mysqli \
           php7-mysqlnd \
           php7-odbc \
