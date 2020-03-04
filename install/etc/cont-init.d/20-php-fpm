@@ -5,7 +5,6 @@ PROCESS_NAME="php-fpm"
 
 case "$CONTAINER_MODE" in
       "nginx")
-set -x
             print_warn "Setting Container to operate in Nginx standalone mode"
             if [ "${PHP_FPM_HOST}" = "127.0.0.1" ] || [ "${PHP_FPM_HOST}" = "localhost" ] ; then
               print_error "Your PHP_FPM_HOST variable is still set to 'localhost' Please change it to something else"
@@ -25,17 +24,16 @@ set -x
             sed -i "/ server {/i\include \/etc\/nginx\/nginx.conf.d\/php-pool.conf;" /etc/nginx/conf.d/default.conf
             sed -i "/ server {/i\ n "/etc/nginx/conf.d/default.conf
             sed -i "s#fastcgi_pass.*#fastcgi_pass php-pool;#g" /etc/nginx/nginx.conf.d/php-fpm.conf
-            s6-svc -d /var/run/s6/services/`basename "$0"`
+            service_stop `basename "$0"`
             liftoff
       ;;
       "php-fpm")
             print_warn "Setting Container to operate in PHP-FPM standalone mode - You will need a seperate container for Nginx or another webserver to serve content"
-            s6-svc -d /var/run/s6/services/10-nginx
+            service_stop 10-nginx
             print_notice "Setting PHP-FPM to serve from ${PHP_WEBROOT}"
             sed -i "/[www]#/achdir = ${PHP_WEBROOT}" /etc/php7/php-fpm.conf
       ;;
 esac
-
 
 if [ "$PHP_ENABLE_REDIS" = "TRUE" ] ; then
   PHP_ENABLE_IGBINARY=TRUE
@@ -87,7 +85,7 @@ if [ "$PHP_ENABLE_XDEBUG" = "TRUE" ];  then
   PHP_XDEBUG_PROFILER_ENABLE=${PHP_XDEBUG_PROFILER_ENABLE:-"0"}
   PHP_XDEBUG_PROFILER_ENABLE_TRIGGER=${PHP_XDEBUG_PROFILER_ENABLE_TRIGGER:-"0"}
   PHP_XDEBUG_REMOTE_AUTOSTART=${PHP_XDEBUG_REMOTE_AUTOSTART:-"1"}
-  PHP_XDEBUG_REMOTE_CONNECT_BACK=${PHP_XDEBUG_REMOTE_CONNECT_BACK:-"0"}  
+  PHP_XDEBUG_REMOTE_CONNECT_BACK=${PHP_XDEBUG_REMOTE_CONNECT_BACK:-"0"}
   PHP_XDEBUG_REMOTE_ENABLE=${PHP_XDEBUG_REMOTE_ENABLE:-"1"}
   PHP_XDEBUG_REMOTE_HANDLER=${PHP_XDEBUG_REMOTE_HANDLER:-"dbgp"}
   PHP_XDEBUG_REMOTE_HOST=${PHP_XDEBUG_REMOTE_HOST:-"127.0.0.1"}
@@ -122,7 +120,7 @@ sed -i -e "s#date.timezone = .*#date.timezone = `cat /etc/timezone`#g" /etc/php7
 
 ### PHP Log Level
 sed -i -e "s/<PHP_LOG_LEVEL>/$PHP_LOG_LEVEL/g" /etc/php7/php-fpm.conf
- 
+
 ### Create Log Directories
 mkdir -p ${PHP_LOG_LOCATION}
 chown -R ${NGINX_USER}:${NGINX_GROUP} ${PHP_LOG_LOCATION}
@@ -156,10 +154,10 @@ if [ "$PHP_ENABLE_KITCHENSINK" = "FALSE" ] ; then
     if [ "$PHP_ENABLE_SOCKETS" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_sockets.ini; fi;
     if [ "$PHP_ENABLE_SQLITE3" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_sqlite3.ini; fi;
     if [ "$PHP_ENABLE_BROTLI" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/50_brotli.ini; fi;
-    if [ "$PHP_ENABLE_DISEVAL" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/diseval.ini; fi;      
+    if [ "$PHP_ENABLE_DISEVAL" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/diseval.ini; fi;
     if [ "$PHP_ENABLE_GEARMAN" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/gearman.ini; fi;
     if [ "$PHP_ENABLE_MONGODB" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/mongodb.ini; fi;
-    if [ "$PHP_ENABLE_SPX" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/php-spx.ini; fi;      
+    if [ "$PHP_ENABLE_SPX" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/php-spx.ini; fi;
     if [ "$PHP_ENABLE_AMQP" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/40_amqp.ini; fi;
     if [ "$PHP_ENABLE_APCU" != "TRUE" ]; then rm -rf /etc/php7/conf.d/apcu.ini ; fi;
     if [ "$PHP_ENABLE_BCMATH" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_bcmath.ini ; fi;
@@ -179,7 +177,7 @@ if [ "$PHP_ENABLE_KITCHENSINK" = "FALSE" ] ; then
     if [ "$PHP_ENABLE_GMP" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_gmp.ini; fi;
     if [ "$PHP_ENABLE_ICONV" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_iconv.ini ; fi;
     if [ "$PHP_ENABLE_IMAGICK" != "TRUE" ]; then rm -rf /etc/php7/conf.d/imagick.ini ; fi;
-    if [ "$PHP_ENABLE_IGBINARY" != "TRUE" ]; then rm -rf /etc/php7/conf.d/10_igbinary.ini ; fi;      
+    if [ "$PHP_ENABLE_IGBINARY" != "TRUE" ]; then rm -rf /etc/php7/conf.d/10_igbinary.ini ; fi;
     if [ "$PHP_ENABLE_IMAP" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_imap.ini ; fi;
     if [ "$PHP_ENABLE_INTL" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_intl.ini ; fi;
     if [ "$PHP_ENABLE_JSON" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_json.ini ; fi;
@@ -195,7 +193,7 @@ if [ "$PHP_ENABLE_KITCHENSINK" = "FALSE" ] ; then
     if [ "$PHP_ENABLE_OPENSSL" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_openssl.ini ; fi;
     if [ "$PHP_ENABLE_PCNTL" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_pcntl.ini ; fi;
     if [ "$PHP_ENABLE_PDO" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_pdo.ini ; fi;
-    if [ "$PHP_ENABLE_PDO_DBLIB" != "TRUE" ]; then rm -rf /etc/php7/conf.d/01_pdo_dblib.ini ; fi;      
+    if [ "$PHP_ENABLE_PDO_DBLIB" != "TRUE" ]; then rm -rf /etc/php7/conf.d/01_pdo_dblib.ini ; fi;
     if [ "$PHP_ENABLE_PDO_MYSQL" != "TRUE" ]; then rm -rf /etc/php7/conf.d/02_pdo_mysql.ini ; fi;
     if [ "$PHP_ENABLE_PDO_PGSQL" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/01_pdo_pgsql.ini; fi;
     if [ "$PHP_ENABLE_PDO_ODBC" != "TRUE" ]; then rm -rf /etc/php7/conf.d/01_pdo_odbc.ini ; fi;
