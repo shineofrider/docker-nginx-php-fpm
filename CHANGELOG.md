@@ -1,3 +1,9 @@
+## 5.3.4 2020-03-16 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change msmtp configuration
+
+
 ## 5.3.3 2020-03-04 <dave at tiredofit dot ca>
 
    ### Added
