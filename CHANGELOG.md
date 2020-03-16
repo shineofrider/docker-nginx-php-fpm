@@ -1,15 +1,14 @@
+## 5.3.4 2020-03-16 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change msmtp configuration
+
+
 ## 5.3.3 2020-03-04 <dave at tiredofit dot ca>
 
    ### Added
       - Update image to support new tiredofit/alpine:4.4.0 base image
-
-
-## 5.3.2 2020-02-25 <dave at tiredofit dot ca>
-
-   ### Changed
-      - Remove PhP7-pecl-mongodb temporarily
-
-
+      
 ## 5.3.1 2020-01-20 <dave at tiredofit dot ca>
 
    ### Changed
