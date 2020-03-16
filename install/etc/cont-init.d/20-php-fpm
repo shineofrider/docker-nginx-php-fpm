@@ -112,7 +112,7 @@ if [ "$PHP_ENABLE_XDEBUG" = "TRUE" ];  then
 fi
 
 ### SMTP Config
-echo 'sendmail_path="/usr/bin/msmtp -C /etc/msmtp -t "' > /etc/php7/conf.d/smtp.ini
+echo 'sendmail_path="/usr/bin/msmtp -C /etc/msmtprc -t "' > /etc/php7/conf.d/smtp.ini
 
 ### Timezone Config
 echo "date.timezone="`cat /etc/timezone` >> /etc/php7/conf.d/timezone.ini
