@@ -35,6 +35,10 @@ case "$CONTAINER_MODE" in
       ;;
 esac
 
+if var_true $PHP_ENABLE_REDIS ; then
+  PHP_ENABLE_IGBINARY=TRUE
+fi
+
 ### Adjust PHP Runtime Variables
 sed -i -e "s#<PHP_LISTEN_PORT>#$PHP_FPM_LISTEN_PORT#g" /etc/php7/php-fpm.conf
 sed -i -e "s#<MAX_CHILDREN>#$PHP_FPM_MAX_CHILDREN#g" /etc/php7/php-fpm.conf
@@ -60,7 +64,6 @@ sed -i -e "s#max_input_time = .*#max_input_time = $PHP_TIMEOUT#g" /etc/php7/php.
 sed -i -e "s#default_socket_timeout = .*#default_socket_timeout = $PHP_TIMEOUT#g" /etc/php7/php.ini
 sed -i -e "s#post_max_size = .*#post_max_size = $PHP_UPLOAD_MAX_SIZE#g" /etc/php7/php.ini
 sed -i -e "s#upload_max_filesize = .*#upload_max_filesize = $PHP_UPLOAD_MAX_SIZE#g" /etc/php7/php.ini
-
 ### Disable Opcache
 if [ "$PHP_APC_SHM_SIZE" = "0" ]; then
   sed -i -e "s/apc.enabled=1/apc.enabled=0/g" /etc/php7/conf.d/acpu.ini
@@ -71,7 +74,7 @@ if [ "$PHP_OPCACHE_MEM_SIZE" = "0" ]; then
   sed -i -e "s/opcache.enable_cli=1/opcache.enable_cli=0/g" /etc/php7/conf.d/00_opcache.ini
 fi
 
-if [ "$PHP_ENABLE_ERRORS" != "TRUE" ]; then
+if var_true $PHP_ENABLE_ERRORS ; then
   sed -i -e "\#php_flag[display_errors]#d" /etc/php7/php-fpm.conf
 fi
 
@@ -125,7 +128,7 @@ chown -R ${NGINX_USER}:${NGINX_GROUP} ${PHP_LOG_LOCATION}
 sed -i -e "s#<PHP_LOG_LOCATION>#${PHP_LOG_LOCATION}#g" /etc/logrotate.d/php-fpm
 
 #### Create Sample PHP File if doesn't exist
-if [ "$PHP_ENABLE_CREATE_SAMPLE_PHP" = "TRUE" ]; then
+if var_true $PHP_ENABLE_CREATE_SAMPLE_PHP ; then
   if [ ! -f "${NGINX_WEBROOT}/index.php" ] ; then
      print_notice "Creating sample index.php"
      mkdir -p ${NGINX_WEBROOT}
@@ -141,61 +144,63 @@ EOF
 fi
 
 #### Disable Extensions
-if [ "$PHP_ENABLE_KITCHENSINK" = "FALSE" ] ; then
+if var_nottrue $PHP_ENABLE_KITCHENSINK ; then
     unset PHP_ENABLE_CREATE_SAMPLE_PHP
     unset PHP_ENABLE_DISPLAY_ERRORS
     php_plugins_enabled=`set -o posix; set | sort | grep PHP_ENABLE_ | grep TRUE |sed -e 's/PHP_ENABLE_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | tr A-Z a-z`
     print_notice "PHP-FPM Preparing to start with the following plugins enabled: ${php_plugins_enabled}"
-    if [ "$PHP_ENABLE_APCU" != "TRUE" ]; then rm -rf /etc/php7/conf.d/apcu.ini ; fi;
-    if [ "$PHP_ENABLE_BCMATH" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_bcmath.ini ; fi;
-    if [ "$PHP_ENABLE_BZ2" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_bz2.ini; fi;
-    if [ "$PHP_ENABLE_CALENDAR" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_calendar.ini; fi;
-    if [ "$PHP_ENABLE_CTYPE" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_ctype.ini ; fi;
-    if [ "$PHP_ENABLE_CURL" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_curl.ini ; fi;
-    if [ "$PHP_ENABLE_DBA" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_dba.ini; fi;
-    if [ "$PHP_ENABLE_DOM" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_dom.ini ; fi;
-    if [ "$PHP_ENABLE_EMBED" != "TRUE" ]; then  : ; fi;
-    if [ "$PHP_ENABLE_ENCHANT" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_enchant.ini ; fi;
-    if [ "$PHP_ENABLE_EXIF" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/01_exif.ini; fi;
-    if [ "$PHP_ENABLE_FTP" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_ftp.ini; fi;
-    if [ "$PHP_ENABLE_GD" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_gd.ini ; fi;
-    if [ "$PHP_ENABLE_GETTEXT" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_gettext.ini; fi;
-    if [ "$PHP_ENABLE_GMP" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_gmp.ini; fi;
-    if [ "$PHP_ENABLE_ICONV" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_iconv.ini ; fi;
-    if [ "$PHP_ENABLE_IGBINARY" != "TRUE" ]; then rm -rf /etc/php7/conf.d/10_igbinary.ini ; fi;
-    if [ "$PHP_ENABLE_IMAP" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_imap.ini ; fi;
-    if [ "$PHP_ENABLE_INTL" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_intl.ini ; fi;
-    if [ "$PHP_ENABLE_JSON" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_json.ini ; fi;
-    if [ "$PHP_ENABLE_LDAP" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_ldap.ini ; fi;
-    if [ "$PHP_ENABLE_MBSTRING" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_mbstring.ini ; fi;
-    if [ "$PHP_ENABLE_MCRYPT" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_mcrypt.ini ; fi;
-    if [ "$PHP_ENABLE_MONGODB" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/mongodb.ini; fi;
-    if [ "$PHP_ENABLE_MYSQLI" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/02_mysqli.ini; fi;
-    if [ "$PHP_ENABLE_MYSQLND" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/01_mysqlnd.ini; fi;
-    if [ "$PHP_ENABLE_ODBC" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_odbc.ini; fi;
-    if [ "$PHP_ENABLE_OPCACHE" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_opcache.ini ; fi;
-    if [ "$PHP_ENABLE_OPENSSL" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_openssl.ini ; fi;
-    if [ "$PHP_ENABLE_PCNTL" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_pcntl.ini ; fi;
-    if [ "$PHP_ENABLE_PDO" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_pdo.ini ; fi;
-    if [ "$PHP_ENABLE_PGSQL" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_pgsql.ini; fi;
-    if [ "$PHP_ENABLE_PHAR" != "TRUE" ]; then rm -rf /etc/php7/conf.d/01_phar.ini ; fi;
-    if [ "$PHP_ENABLE_POSIX" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_posix.ini; fi;
-    if [ "$PHP_ENABLE_PSPELL" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_pspell.ini; fi;
-    if [ "$PHP_ENABLE_SESSION" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_session.ini ; fi;
-    if [ "$PHP_ENABLE_SHMOP" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_shmop.ini; fi;
-    if [ "$PHP_ENABLE_SNMP" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_snmp.ini; fi;
-    if [ "$PHP_ENABLE_SOAP" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_soap.ini; fi;
-    if [ "$PHP_ENABLE_SOCKETS" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_sockets.ini; fi;
-    if [ "$PHP_ENABLE_SQLITE3" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_sqlite3.ini; fi;
-    if [ "$PHP_ENABLE_TIDY" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_tidy.ini; fi;
-    if [ "$PHP_ENABLE_WDDX" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/01_wddx.ini; fi;
-    if [ "$PHP_ENABLE_XDEBUG" != "TRUE" ]; then rm -rf /etc/php7/conf.d/xdebug.ini ; fi;
-    if [ "$PHP_ENABLE_XML" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_xml.ini ; fi;
-    if [ "$PHP_ENABLE_XMLREADER" != "TRUE" ]; then rm -rf /etc/php7/conf.d/01_xmlreader.ini ; fi;
-    if [ "$PHP_ENABLE_XMLRPC" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/01_xmlrpc.ini; fi;
-    if [ "$PHP_ENABLE_ZIP" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/00_zip.ini; fi;
-    if [ "$PHP_ENABLE_ZLIB" != "TRUE" ]; then rm -rf /etc/php7/conf.d/00_zlib.ini ; fi;
-    if [ "$PHP_ENABLE_ZMQ" != "TRUE" ]; then  rm -rf /etc/php7/conf.d/50_zmq.ini; fi;
+    if var_nottrue $PHP_ENABLE_APCU ; then rm -rf /etc/php7/conf.d/apcu.ini ; fi;
+    if var_nottrue $PHP_ENABLE_BCMATH ; then rm -rf /etc/php7/conf.d/00_bcmath.ini ; fi;
+    if var_nottrue $PHP_ENABLE_BZ2 ; then  rm -rf /etc/php7/conf.d/00_bz2.ini; fi;
+    if var_nottrue $PHP_ENABLE_CALENDAR ; then rm -rf /etc/php7/conf.d/00_calendar.ini; fi;
+    if var_nottrue $PHP_ENABLE_CTYPE ; then rm -rf /etc/php7/conf.d/00_ctype.ini ; fi;
+    if var_nottrue $PHP_ENABLE_CURL ; then rm -rf /etc/php7/conf.d/00_curl.ini ; fi;
+    if var_nottrue $PHP_ENABLE_DBA ; then  rm -rf /etc/php7/conf.d/00_dba.ini; fi;
+    if var_nottrue $PHP_ENABLE_DOM ; then rm -rf /etc/php7/conf.d/00_dom.ini ; fi;
+    if var_nottrue $PHP_ENABLE_EMBED ; then  : ; fi;
+    if var_nottrue $PHP_ENABLE_ENCHANT ; then rm -rf /etc/php7/conf.d/00_enchant.ini ; fi;
+    if var_nottrue $PHP_ENABLE_EXIF ; then  rm -rf /etc/php7/conf.d/01_exif.ini; fi;
+    if var_nottrue $PHP_ENABLE_FTP ; then  rm -rf /etc/php7/conf.d/00_ftp.ini; fi;
+    if var_nottrue $PHP_ENABLE_GD ; then rm -rf /etc/php7/conf.d/00_gd.ini ; fi;
+    if var_nottrue $PHP_ENABLE_GETTEXT ; then  rm -rf /etc/php7/conf.d/00_gettext.ini; fi;
+    if var_nottrue $PHP_ENABLE_GMP ; then  rm -rf /etc/php7/conf.d/00_gmp.ini; fi;
+    if var_nottrue $PHP_ENABLE_ICONV ; then rm -rf /etc/php7/conf.d/00_iconv.ini ; fi;
+    if var_nottrue $PHP_ENABLE_IGBINARY ; then rm -rf /etc/php7/conf.d/10_igbinary.ini ; fi;
+    if var_nottrue $PHP_ENABLE_IMAP ; then rm -rf /etc/php7/conf.d/00_imap.ini ; fi;
+    if var_nottrue $PHP_ENABLE_INTL ; then rm -rf /etc/php7/conf.d/00_intl.ini ; fi;
+    if var_nottrue $PHP_ENABLE_JSON ; then rm -rf /etc/php7/conf.d/00_json.ini ; fi;
+    if var_nottrue $PHP_ENABLE_LDAP ; then rm -rf /etc/php7/conf.d/00_ldap.ini ; fi;
+    if var_nottrue $PHP_ENABLE_MBSTRING ; then rm -rf /etc/php7/conf.d/00_mbstring.ini ; fi;
+    if var_nottrue $PHP_ENABLE_MCRYPT ; then rm -rf /etc/php7/conf.d/00_mcrypt.ini ; fi;
+    if var_nottrue $PHP_ENABLE_MONGODB ; then  rm -rf /etc/php7/conf.d/mongodb.ini; fi;
+    if var_nottrue $PHP_ENABLE_MYSQLI ; then  rm -rf /etc/php7/conf.d/02_mysqli.ini; fi;
+    if var_nottrue $PHP_ENABLE_MYSQLND ; then  rm -rf /etc/php7/conf.d/01_mysqlnd.ini; fi;
+    if var_nottrue $PHP_ENABLE_ODBC ; then  rm -rf /etc/php7/conf.d/00_odbc.ini; fi;
+    if var_nottrue $PHP_ENABLE_OPCACHE ; then rm -rf /etc/php7/conf.d/00_opcache.ini ; fi;
+    if var_nottrue $PHP_ENABLE_OPENSSL ; then rm -rf /etc/php7/conf.d/00_openssl.ini ; fi;
+    if var_nottrue $PHP_ENABLE_PCNTL ; then rm -rf /etc/php7/conf.d/00_pcntl.ini ; fi;
+    if var_nottrue $PHP_ENABLE_PDO ; then rm -rf /etc/php7/conf.d/00_pdo.ini ; fi;
+    if var_nottrue $PHP_ENABLE_PDO_PGSQL ; then  rm -rf /etc/php7/conf.d/01_pdo_pgsql.ini; fi;
+    if var_nottrue $PHP_ENABLE_PGSQL ; then  rm -rf /etc/php7/conf.d/00_pgsql.ini; fi;
+    if var_nottrue $PHP_ENABLE_PHAR ; then rm -rf /etc/php7/conf.d/01_phar.ini ; fi;
+    if var_nottrue $PHP_ENABLE_POSIX ; then  rm -rf /etc/php7/conf.d/00_posix.ini; fi;
+    if var_nottrue $PHP_ENABLE_PSPELL ; then  rm -rf /etc/php7/conf.d/00_pspell.ini; fi;
+    if var_nottrue $PHP_ENABLE_SESSION ; then rm -rf /etc/php7/conf.d/00_session.ini ; fi;
+    if var_nottrue $PHP_ENABLE_SHMOP ; then  rm -rf /etc/php7/conf.d/00_shmop.ini; fi;
+    if var_nottrue $PHP_ENABLE_SNMP ; then  rm -rf /etc/php7/conf.d/00_snmp.ini; fi;
+    if var_nottrue $PHP_ENABLE_SOAP ; then  rm -rf /etc/php7/conf.d/00_soap.ini; fi;
+    if var_nottrue $PHP_ENABLE_SOCKETS ; then  rm -rf /etc/php7/conf.d/00_sockets.ini; fi;
+    if var_nottrue $PHP_ENABLE_SQLITE3 ; then  rm -rf /etc/php7/conf.d/00_sqlite3.ini; fi;
+    if var_nottrue $PHP_ENABLE_TIDY ; then  rm -rf /etc/php7/conf.d/00_tidy.ini; fi;
+    if var_nottrue $PHP_ENABLE_WDDX ; then  rm -rf /etc/php7/conf.d/01_wddx.ini; fi;
+    if var_nottrue $PHP_ENABLE_XDEBUG ; then rm -rf /etc/php7/conf.d/xdebug.ini ; fi;
+    if var_nottrue $PHP_ENABLE_XML ; then rm -rf /etc/php7/conf.d/00_xml.ini ; fi;
+    if var_nottrue $PHP_ENABLE_XMLREADER ; then rm -rf /etc/php7/conf.d/01_xmlreader.ini ; fi;
+    if var_nottrue $PHP_ENABLE_XMLRPC ; then  rm -rf /etc/php7/conf.d/01_xmlrpc.ini; fi;
+    if var_nottrue $PHP_ENABLE_XMLWRITER ; then  rm -rf /etc/php7/conf.d/00_xmlwriter.ini; fi;
+    if var_nottrue $PHP_ENABLE_ZIP ; then  rm -rf /etc/php7/conf.d/00_zip.ini; fi;
+    if var_nottrue $PHP_ENABLE_ZLIB ; then rm -rf /etc/php7/conf.d/00_zlib.ini ; fi;
+    if var_nottrue $PHP_ENABLE_ZMQ ; then  rm -rf /etc/php7/conf.d/50_zmq.ini; fi;
 else
   print_warn "Enabling Kitchen Sink mode and allowing all plugins to be active"
 fi
