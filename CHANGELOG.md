@@ -1,3 +1,9 @@
+## 5.3.7 2020-04-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Remove extra logrotate.d file added by package
+
+
 ## 5.3.6 2020-04-21 <dave at tiredofit dot ca>
 
    ### Changed
