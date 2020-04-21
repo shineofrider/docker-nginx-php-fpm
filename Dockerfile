@@ -89,16 +89,17 @@ RUN set -x && \
           php7-zmq \
           postgresql-client \
           && \
- \
-### Nginx and PHP7 Setup
- sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php7/php.ini && \
- ln -s /sbin/php-fpm7 /sbin/php-fpm && \
- \
-### Install PHP Composer
- curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
- \
+    \
+    ### PHP7 Setup
+    sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php7/php.ini && \
+    ln -s /sbin/php-fpm7 /sbin/php-fpm && \
+    rm -rf /etc/logrotate.d/php-fpm7 && \
+    \
+    ### Install PHP Composer
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
+    \
 ### Cleanup
- rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/*
 
 ### Networking Configuration
 EXPOSE 9000
