@@ -1,3 +1,9 @@
+## 5.3.6 2020-04-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for PHP Plugins not enabling correctly
+
+
 ## 5.3.5 2020-04-18 <dave at tiredofit dot ca>
 
    ### Added
