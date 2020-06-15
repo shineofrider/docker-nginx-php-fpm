@@ -64,7 +64,6 @@ RUN set -x && \
           php7-phar\
           php7-posix \
           php7-pspell \
-          php7-recode \
           php7-redis \
           php7-session \
           php7-shmop \
@@ -77,7 +76,6 @@ RUN set -x && \
           php7-sqlite3 \
           php7-tidy \
           php7-tokenizer \
-          php7-wddx \
           php7-xdebug \
           php7-xml \
           php7-xmlreader \

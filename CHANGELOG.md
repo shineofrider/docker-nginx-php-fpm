@@ -1,3 +1,9 @@
+## 5.4.1 2020-06-15 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Remove recode and wddx modules as not available in PHP 7.4
+
+
 ## 5.4.0 2020-06-09 <dave at tiredofit dot ca>
 
    ### Added
