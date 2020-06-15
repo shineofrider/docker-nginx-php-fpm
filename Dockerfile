@@ -1,4 +1,4 @@
-FROM tiredofit/nginx:alpine-3.11
+FROM tiredofit/nginx:alpine-3.12
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Default Runtime Environment Variables
@@ -8,7 +8,6 @@ ENV ZABBIX_HOSTNAME=nginx-php-fpm-app \
 
 ### Dependency Installation
 RUN set -x && \
-    echo 'http://dl-4.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
     apk update && \
     apk add -t .php-fpm-run-deps \
           ca-certificates \
@@ -24,7 +23,6 @@ RUN set -x && \
           php7-ctype \
           php7-curl \
           php7-dba \
-          php7-diseval \
           php7-dom \
           php7-embed \
           php7-enchant \
@@ -33,7 +31,6 @@ RUN set -x && \
           php7-fpm \
           php7-ftp \
           php7-gd \
-          php7-gearman \
           php7-gettext \
           php7-gmp \
           php7-iconv \
@@ -73,7 +70,6 @@ RUN set -x && \
           php7-soap \
           php7-sockets \
           php7-sodium \
-          php7-spx \
           php7-sqlite3 \
           php7-tidy \
           php7-tokenizer \
