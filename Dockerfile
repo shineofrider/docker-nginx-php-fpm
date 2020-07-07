@@ -9,9 +9,18 @@ ENV ZABBIX_HOSTNAME=nginx-php-fpm-app \
 ### Dependency Installation
 RUN set -x && \
     apk update && \
+    apk upgrade && \
+    apk add -t .php-fpm.build-deps \
+          build-base \
+          git \
+          libmemcached-dev \
+          php7-dev \
+          && \
+    \
     apk add -t .php-fpm-run-deps \
           ca-certificates \
           imagemagick \
+          libmemcached \
           mariadb-client \
           php7-apcu \
           php7-amqp \
@@ -43,7 +52,6 @@ RUN set -x && \
           php7-mailparse \
           php7-mbstring \
           php7-mcrypt \
-          php7-memcached \
           #php7-pecl-mongodb \
           php7-mysqli \
           php7-mysqlnd \
@@ -86,6 +94,13 @@ RUN set -x && \
           postgresql-client \
           && \
     \
+    ## Install Memcached Extension
+    git clone https://github.com/php-memcached-dev/php-memcached /usr/src/php-memcached && \
+    cd /usr/src/php-memcached && \
+    phpize && \
+    ./configure && \
+    make -j$(getconf _NPROCESSORS_ONLN) && \
+    make install &&\
     ### PHP7 Setup
     sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php7/php.ini && \
     ln -s /sbin/php-fpm7 /sbin/php-fpm && \
@@ -95,6 +110,9 @@ RUN set -x && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
     \
 ### Cleanup
+    cd / && \
+    apk del .php-fpm.build-deps && \
+    rm -rf /usr/src/* && \
     rm -rf /var/cache/apk/*
 
 ### Networking Configuration
