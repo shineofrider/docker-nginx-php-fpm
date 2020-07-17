@@ -1,3 +1,9 @@
+## 5.4.1 2020-07-16 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix logrotate for PHP-FPM
+
+
 ## 5.4.0 2020-06-09 <dave at tiredofit dot ca>
 
    ### Added
