@@ -1,3 +1,9 @@
+## 5.4.2 2020-07-24 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix PHP-FPM from not starting
+
+
 ## 5.4.1 2020-07-16 <dave at tiredofit dot ca>
 
    ### Changed
