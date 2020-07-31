@@ -1,3 +1,9 @@
+## 5.5.2 2020-07-31 <dave at tiredofit dot ca>
+
+   ### Added
+      - PHP 7.4
+
+
 ## 5.5.1 2020-07-16 <dave at tiredofit dot ca>
 
    ### Changed
