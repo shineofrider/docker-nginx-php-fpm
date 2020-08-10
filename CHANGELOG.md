@@ -1,3 +1,9 @@
+## 5.5.4 2020-08-10 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix to regex for LLNG Authentication
+
+
 ## 5.5.3 2020-08-10 <dave at tiredofit dot ca>
 
    ### Added
