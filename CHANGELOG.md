@@ -1,3 +1,9 @@
+## 5.5.5 2020-08-14 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Patchup container initialization script
+
+
 ## 5.5.4 2020-08-10 <dave at tiredofit dot ca>
 
    ### Changed
