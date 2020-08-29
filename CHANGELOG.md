@@ -1,3 +1,9 @@
+## 5.5.6 2020-08-29 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add ENABLE_PHP_FPM variable
+
+
 ## 5.5.5 2020-08-14 <dave at tiredofit dot ca>
 
    ### Changed
