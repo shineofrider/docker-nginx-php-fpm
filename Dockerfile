@@ -2,7 +2,8 @@ FROM tiredofit/nginx:debian
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Default Runtime Environment Variables
-ENV ZABBIX_HOSTNAME=nginx-php-fpm-app \
+ENV COMPOSER_VERSION=1.10.16 \
+    ZABBIX_HOSTNAME=nginx-php-fpm-app \
     ENABLE_SMTP=TRUE \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE
 
@@ -51,7 +52,7 @@ RUN set -x && \
     rm -rf /etc/logrotate.d/php7.4-fpm && \
     \
     ### Install PHP Composer
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION} && \
     \
     ### Cleanup
     mkdir -p /var/log/nginx && \

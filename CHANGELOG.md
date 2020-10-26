@@ -1,3 +1,9 @@
+## 5.6.0 2020-10-26 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add composer version declaration (Pinning to 1.10.16)
+
+
 ## 5.5.6 2020-08-29 <dave at tiredofit dot ca>
 
    ### Added
