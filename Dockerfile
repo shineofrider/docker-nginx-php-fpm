@@ -1,8 +1,8 @@
 FROM tiredofit/nginx:alpine-edge
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
-### Default Runtime Environment Variables
-ENV ZABBIX_HOSTNAME=nginx-php-fpm-app \
+ENV COMPOSER_VERSION=1.10.16 \
+    ZABBIX_HOSTNAME=nginx-php-fpm-app \
     ENABLE_SMTP=TRUE \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE
 
@@ -94,7 +94,7 @@ RUN set -x && \
     rm -rf /etc/logrotate.d/php-fpm7 && \
     \
     ### Install PHP Composer
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION} && \
     \
 ### Cleanup
     rm -rf /var/cache/apk/*
