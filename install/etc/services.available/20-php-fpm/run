@@ -8,4 +8,4 @@ check_service_initialized init
 liftoff
 
 print_info "Starting php-fpm ${PHP_VERSION}"
-silent exec s6-setuidgid nginx php-fpm7 -F;
+silent exec s6-setuidgid nginx php-fpm8 -F;

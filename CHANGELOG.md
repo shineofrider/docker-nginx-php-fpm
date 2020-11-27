@@ -1,3 +1,9 @@
+## 5.6.0 2020-11-27 <dave at tiredofit dot ca>
+
+   ### Added
+      - PHP 8.0
+
+
 ## 5.5.0 2020-10-26 <dave at tiredofit dot ca>
 
    ### Added

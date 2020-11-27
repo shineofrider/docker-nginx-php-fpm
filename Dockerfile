@@ -14,84 +14,76 @@ RUN set -x && \
           ca-certificates \
           imagemagick \
           mariadb-client \
-          php7-apcu \
-          php7-amqp \
-          php7-bcmath \
-          php7-brotli \
-          php7-bz2 \
-          php7-calendar \
-          php7-common \
-          php7-ctype \
-          php7-curl \
-          php7-dba \
-          php7-diseval \
-          php7-dom \
-          php7-embed \
-          php7-enchant \
-          php7-exif \
-          php7-fileinfo \
-          php7-fpm \
-          php7-ftp \
-          php7-gd \
-          php7-gearman \
-          php7-gettext \
-          php7-gmp \
-          php7-iconv \
-          php7-imagick \
-          php7-imap \
-          php7-intl \
-          php7-json \
-          php7-ldap \
-          php7-litespeed \
-          php7-mailparse \
-          php7-mbstring \
-          php7-mcrypt \
-          php7-memcached \
-          php7-pecl-mongodb \
-          php7-mysqli \
-          php7-mysqlnd \
-          php7-odbc \
-          php7-opcache \
-          php7-openssl \
-          php7-pcntl \
-          php7-pdo \
-          php7-pdo_dblib \
-          php7-pdo_mysql \
-          php7-pdo_odbc \
-          php7-pdo_pgsql \
-          php7-pdo_sqlite \
-          php7-pgsql \
-          php7-phar\
-          php7-posix \
-          php7-pspell \
-          php7-redis \
-          php7-session \
-          php7-shmop \
-          php7-simplexml \
-          php7-snmp \
-          php7-soap \
-          php7-sockets \
-          php7-sodium \
-          php7-spx \
-          php7-sqlite3 \
-          php7-tidy \
-          php7-tokenizer \
-          php7-xdebug \
-          php7-xml \
-          php7-xmlreader \
-          php7-xmlrpc \
-          php7-xmlwriter \
-          php7-xml \
-          php7-zip \
-          php7-zlib \
-          php7-zmq \
+          php8-bcmath \
+          php8-bz2 \
+          php8-calendar \
+          php8-cli \
+          php8-common \
+          php8-ctype \
+          php8-curl \
+          php8-dba \
+          php8-dom \
+          php8-embed \
+          php8-enchant \
+          php8-exif \
+          php8-ffi \
+          php8-fileinfo \
+          php8-fpm \
+          php8-ftp \
+          php8-gd \
+          php8-gettext \
+          php8-gmp \
+          php8-iconv \
+          php8-imap \
+          php8-intl \
+          php8-json \
+          php8-ldap \
+          php8-litespeed \
+          php8-mbstring \
+          php8-mysqli \
+          php8-mysqlnd \
+          php8-odbc \
+          php8-opcache \
+          php8-openssl \
+          php8-pcntl \
+          php8-pdo \
+          php8-pdo_dblib \
+          php8-pdo_mysql \
+          php8-pdo_odbc \
+          php8-pdo_pgsql \
+          php8-pdo_sqlite \
+          php8-pecl-apcu \
+          php8-pecl-igbinary \
+          php8-pecl-mongodb \
+          php8-pecl-redis \
+          php8-pecl-xdebug \
+          php8-pgsql \
+          php8-phar\
+          php8-posix \
+          php8-pspell \
+          php8-session \
+          php8-shmop \
+          php8-simplexml \
+          php8-snmp \
+          php8-soap \
+          php8-sockets \
+          php8-sodium \
+          php8-sqlite3 \
+          php8-tidy \
+          php8-tokenizer \
+          php8-xml \
+          php8-xmlreader \
+          php8-xmlwriter \
+          php8-zip \
+          php8-zlib \
           postgresql-client \
           && \
     \
-    ### PHP7 Setup
-    sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php7/php.ini && \
-    ln -s /sbin/php-fpm7 /sbin/php-fpm && \
-    rm -rf /etc/logrotate.d/php-fpm7 && \
+    ### php8 Setup
+    sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php8/php.ini && \
+    ln -s /usr/sbin/php-fpm8 /sbin/php-fpm && \
+    ln -s /usr/bin/php8 /sbin/php && \
+    rm -rf /etc/logrotate.d/php-fpm8 && \
     \
     ### Install PHP Composer
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION} && \
