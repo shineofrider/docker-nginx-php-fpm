@@ -1,3 +1,9 @@
+## 5.5.1 2021-01-14 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Switch to Alpine 3.13 Base instead of Alpine edge
+
+
 ## 5.5.0 2020-10-26 <dave at tiredofit dot ca>
 
    ### Added

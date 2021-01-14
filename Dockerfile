@@ -1,4 +1,4 @@
-FROM tiredofit/nginx:alpine-edge
+FROM tiredofit/nginx:alpine-3.13
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ENV COMPOSER_VERSION=1.10.16 \
