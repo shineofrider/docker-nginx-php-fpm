@@ -1,4 +1,4 @@
-FROM tiredofit/nginx:alpine-edge
+FROM tiredofit/nginx:alpine-3.13
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ENV COMPOSER_VERSION=1.10.16 \
@@ -8,7 +8,6 @@ ENV COMPOSER_VERSION=1.10.16 \
 
 ### Dependency Installation
 RUN set -x && \
-    echo 'http://dl-4.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
     apk update && \
     apk add -t .php-fpm-run-deps \
           ca-certificates \
