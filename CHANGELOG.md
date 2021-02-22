@@ -1,3 +1,9 @@
+## 5.6.2 2021-02-22 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add PHP8 pecl imagick extension
+
+
 ## 5.6.1 2021-01-14 <dave at tiredofit dot ca>
 
    ### Changed

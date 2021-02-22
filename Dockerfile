@@ -53,6 +53,7 @@ RUN set -x && \
           php8-pdo_sqlite \
           php8-pecl-apcu \
           php8-pecl-igbinary \
+          php8-pecl-imagick \
           php8-pecl-mongodb \
           php8-pecl-redis \
           php8-pecl-xdebug \
