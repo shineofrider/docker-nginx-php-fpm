@@ -1,6 +1,5 @@
 # hub.docker.com/r/tiredofit/nginx-php-fpm
 
-[![Build Status](https://img.shields.io/docker/build/tiredofit/nginx-php-fpm.svg)](https://hub.docker.com/r/tiredofit/nginx-php-fpm)
 [![Docker Pulls](https://img.shields.io/docker/pulls/tiredofit/nginx-php-fpm.svg)](https://hub.docker.com/r/tiredofit/nginx-php-fpm)
 [![Docker Stars](https://img.shields.io/docker/stars/tiredofit/nginx-php-fpm.svg)](https://hub.docker.com/r/tiredofit/nginx-php-fpm)
 [![Docker
@@ -158,6 +157,7 @@ Extension variables are the same as the names of the PHP extensions
 | `PHP_ENABLE_GEARMAN`           | Default `FALSE` |
 | `PHP_ENABLE_GETTEXT`           | Default `FALSE` |
 | `PHP_ENABLE_GMP`               | Default `FALSE` |
+| `PHP_ENABLE_GNUPG`             | Default `FALSE` |
 | `PHP_ENABLE_ICONV`             | Default `TRUE`  |
 | `PHP_ENABLE_IGBINARY`          | Default `FALSE` |
 | `PHP_ENABLE_IMAGICK`           | Default `FALSE` |

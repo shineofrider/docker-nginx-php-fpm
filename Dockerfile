@@ -10,8 +10,16 @@ ENV COMPOSER_VERSION=1.10.16 \
 RUN set -x && \
     echo 'http://dl-4.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
     apk update && \
+    apk add -t .php-fpm-build-deps \
+          build-base \
+          gpgme-dev \
+          php7-dev \
+          && \
+    \
     apk add -t .php-fpm-run-deps \
           ca-certificates \
+          gnupg \
+          gpgme \
           imagemagick \
           mariadb-client \
           php7-apcu \
@@ -60,6 +68,7 @@ RUN set -x && \
           php7-pdo_odbc \
           php7-pdo_pgsql \
           php7-pdo_sqlite \
+          php7-pear \
           php7-pgsql \
           php7-phar\
           php7-posix \
@@ -93,11 +102,15 @@ RUN set -x && \
     ln -s /sbin/php-fpm7 /sbin/php-fpm && \
     rm -rf /etc/logrotate.d/php-fpm7 && \
     \
+    ### Install additional Pear Modules
+    pecl install gnupg && \
+    \
     ### Install PHP Composer
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION} && \
     \
 ### Cleanup
-    rm -rf /var/cache/apk/*
+    apk del .php-fpm-build-deps && \
+    rm -rf /var/cache/apk/* /tmp/*
 
 ### Networking Configuration
 EXPOSE 9000
