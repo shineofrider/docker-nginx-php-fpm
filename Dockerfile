@@ -9,8 +9,16 @@ ENV COMPOSER_VERSION=1.10.16 \
 ### Dependency Installation
 RUN set -x && \
     apk update && \
+    apk add -t .php-fpm-build-deps \
+          build-base \
+          gpgme-dev \
+          php8-dev \
+          && \
+    \
     apk add -t .php-fpm-run-deps \
           ca-certificates \
+          gnupg \
+          gpgme \
           imagemagick \
           mariadb-client \
           php8-bcmath \
@@ -51,6 +59,7 @@ RUN set -x && \
           php8-pdo_odbc \
           php8-pdo_pgsql \
           php8-pdo_sqlite \
+          php8-pear \
           php8-pecl-apcu \
           php8-pecl-igbinary \
           php8-pecl-imagick \
@@ -83,13 +92,18 @@ RUN set -x && \
     sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php8/php.ini && \
     ln -s /usr/sbin/php-fpm8 /sbin/php-fpm && \
     ln -s /usr/bin/php8 /sbin/php && \
+    ln -s /usr/bin/pecl8 /usr/bin/pecl && \
     rm -rf /etc/logrotate.d/php-fpm8 && \
+    \
+    ### Install additional Pear Modules
+    pecl install gnupg-1.5.0RC2 && \
     \
     ### Install PHP Composer
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION} && \
     \
 ### Cleanup
-    rm -rf /var/cache/apk/*
+    apk del .php-fpm-build-deps && \
+    rm -rf /var/cache/apk/* /tmp/*
 
 ### Networking Configuration
 EXPOSE 9000

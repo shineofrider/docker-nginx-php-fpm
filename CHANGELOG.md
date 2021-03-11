@@ -1,3 +1,9 @@
+## 5.6.3 2021-03-11 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add GnuPG Extension
+
+
 ## 5.6.2 2021-02-22 <dave at tiredofit dot ca>
 
    ### Added

@@ -157,7 +157,7 @@ fi
 if var_false $PHP_ENABLE_KITCHENSINK ; then
     unset PHP_ENABLE_CREATE_SAMPLE_PHP
     unset PHP_ENABLE_DISPLAY_ERRORS
-    php_plugins_enabled=`set -o posix; set | sort | grep PHP_ENABLE_ | grep TRUE |sed -e 's/PHP_ENABLE_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | tr A-Z a-z`
+    php_plugins_enabled=$(set -o posix; set | sort | grep PHP_ENABLE_ | grep TRUE |sed -e 's/PHP_ENABLE_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | tr A-Z a-z)
     print_notice "PHP-FPM Preparing to start with the following plugins enabled: ${php_plugins_enabled}"
     if var_false $PHP_ENABLE_APCU ; then rm -rf /etc/php8/conf.d/apcu.ini ; fi;
     if var_false $PHP_ENABLE_BCMATH ; then rm -rf /etc/php8/conf.d/00_bcmath.ini ; fi;
@@ -177,6 +177,7 @@ if var_false $PHP_ENABLE_KITCHENSINK ; then
     if var_false $PHP_ENABLE_GEARMAN ; then  rm -rf /etc/php8/conf.d/gearman.ini; fi;
     if var_false $PHP_ENABLE_GETTEXT ; then  rm -rf /etc/php8/conf.d/00_gettext.ini; fi;
     if var_false $PHP_ENABLE_GMP ; then  rm -rf /etc/php8/conf.d/00_gmp.ini; fi;
+    if var_true $PHP_ENABLE_GNUPG ; then echo "extension=gnupg.so" > /etc/php8/conf.d/30-gnupg.ini; fi;
     if var_false $PHP_ENABLE_ICONV ; then rm -rf /etc/php8/conf.d/00_iconv.ini ; fi;
     if var_false $PHP_ENABLE_IGBINARY ; then rm -rf /etc/php8/conf.d/10_igbinary.ini ; fi;
     if var_false $PHP_ENABLE_IMAGICK ; then rm -rf /etc/php8/conf.d/imagick.ini ; fi;

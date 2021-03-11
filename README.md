@@ -158,6 +158,7 @@ Extension variables are the same as the names of the PHP extensions
 | `PHP_ENABLE_GEARMAN`           | Default `FALSE` |
 | `PHP_ENABLE_GETTEXT`           | Default `FALSE` |
 | `PHP_ENABLE_GMP`               | Default `FALSE` |
+| `PHP_ENABLE_GNUPG`             | Default `FALSE` |
 | `PHP_ENABLE_ICONV`             | Default `TRUE`  |
 | `PHP_ENABLE_IGBINARY`          | Default `FALSE` |
 | `PHP_ENABLE_IMAGICK`           | Default `FALSE` |
