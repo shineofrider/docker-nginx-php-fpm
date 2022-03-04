@@ -141,10 +141,34 @@ RUN export PHP_7_3_RUN_DEPS=" \
                 mariadb-client \
                 openssl \
                 postgresql-client \
+                # for SSO
+                gcc \
+                make \
+                libkrb5-dev \
+                libpcre3-dev \
+                libssl-dev \
+                libxml2-dev \
+                libxslt1-dev \
+                libgd-dev \
+                libgeoip-dev \
+                zlib1g-dev \
+                # stop
                 ${PHP_RUN_DEPS} \
                 $(printenv PHP$(echo ${PHP_BASE} | sed 's|\.|_|g')_RUN_DEPS) \
                 ${PHP_ADDITIONAL_MODULES} \
                 && \
+    \
+    ### Clone the SPNEGO HTTP Authentication Module
+    git clone https://github.com/stnoonan/spnego-http-auth-nginx-module \
+    ### Define Nginx version variable
+    NGINX_VERSION=$(nginx -v 2>&1) \
+    NGINX_VERSION=$(echo $NGINX_VERSION | grep -o -E '([0-9]{1,2}\.){2}[0-9]') \
+    NGINX_BUILD_FLAGS=$(nginx -V 2>&1) \
+    ### Download, extract and install SPNEGO HTTP Authentication Module
+    curl -fsSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz | tar zxf - \
+    cd nginx-$NGINX_VERSION \
+    ./configure $NGINX_BUILD_FLAGS \
+    cp objs/ngx_http_auth_spnego_module.so /usr/lib/nginx/modules/ \
     \
     ### Install PHP Composer
     curl -sSLk https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
